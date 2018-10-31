@@ -1,4 +1,4 @@
-#nPLUS CoDec$ : Programmer  ---> Naresh Kumar for Glosys Technology Pvt.Ltd.
+#nPLUS CoDec$ : Programmer  ---> Naresh Kumar for Glosys Technology Pvt.Ltd
 import sqlite3 as s
 import time
 from datetime import datetime,timedelta
