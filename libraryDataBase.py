@@ -69,7 +69,11 @@ class portals(data,updation):
     varUser,varUserName,fla,planing="","",0,""
     def EntryBookTable(self):
         c.execute("CREATE TABLE IF NOT EXISTS books (BookName TEXT,BookDept Text,BookAuthor TEXT,ISBNnumber INTEGER,BookCopies INTEGER,BookPrice INTEGER)")
-        bookname,dept,author,isbn,copies,bookPrice=input("Enter The BookName : "),input("Enter the Department : "),input("Enter Author Name: "),int(input("Enter the ISBN Number: ")),int(input("Enter The Number of Copies of the Book: ")),int(input("Enter The Price of the Book : ₹."))
+        bookname,dept,author,isbn,copies,bookPrice=(input("Enter The BookName : "),
+                    input("Enter the Department : "),
+                    input("Enter Author Name: "),int(input("Enter the ISBN Number: ")),
+                    int(input("Enter The Number of Copies of the Book: ")),
+                    int(input("Enter The Price of the Book : ₹.")))
         c.execute("INSERT INTO books(BookName,BookDept,BookAuthor,ISBNnumber,BookCopies,BookPrice) VALUES(?,?,?,?,?,?)",(bookname,dept,author,isbn,copies,bookPrice))
         wire.commit()
     def showBookTable(self):
@@ -93,8 +97,16 @@ class portals(data,updation):
                                 and return with extend time period...''');t-=1
             if d == 0:break
         while x>0:
-            name,dept,reg_no,memplans,usr_name,password,conf_pass = input("Enter The Name : "),input("Enter The Department : "),int(input("Enter the Register Number : ")),input("Enter The Membership Plan You Needed: "),input("Create Your UserName : "),getpass("Create Your password: "),getpass("Confirm Password : ")
-            if password == conf_pass:c.execute("INSERT INTO Students (StudentName,Dept,RegisterNumber,UserName,Password,MembershipPlans) VALUES(?,?,?,?,?,?)",(name,dept,reg_no,usr_name,password,memplans));wire.commit();x=0
+            name,dept,reg_no,memplans,usr_name,password,conf_pass = (input("Enter The Name : "),
+                                    input("Enter The Department : "),
+                                    int(input("Enter the Register Number : ")),
+                                    input("Enter The Membership Plan You Needed: "),
+                                    input("Create Your UserName : "),
+                                    getpass("Create Your password: "),
+                                    getpass("Confirm Password : "))
+            if password == conf_pass:
+                c.execute("INSERT INTO Students (StudentName,Dept,RegisterNumber,UserName,Password,MembershipPlans) VALUES(?,?,?,?,?,?)",(name,dept,reg_no,usr_name,password,memplans))
+                wire.commit();x=0
             else:print("passwords mismatch");x-=1
     def UserNameCheck(self):
         user_name = input("Enter Your User Name : ");portals.varUserName = user_name
@@ -111,7 +123,9 @@ class portals(data,updation):
         c.execute("SELECT Password,MembershipPlans FROM Students");flag=0
         for row in c.fetchall():
             if hashj == row[0]:print("LOGIN Successfully...\n");portals.planing = row[1];flag=1
-        if flag==1:print("Name : ",portals.varUser,"\nUser Name :",portals.varUserName,"\nBook Name | Department | Author Name | ISBN Number |Number of Copies");l.showBookTable();l.BorrowReturn()
+        if flag==1:
+            print("Name : ",portals.varUser,"\nUser Name :",portals.varUserName,"\nBook Name | Department | Author Name | ISBN Number |Number of Copies")
+            l.showBookTable();l.BorrowReturn()
         else:print("You have Entered Wrong password...")
     def BorrowReturn(self):
         option = input("1 --->Borrow\n2 ---->Return\nYour Choice : ")
@@ -130,7 +144,8 @@ class portals(data,updation):
             if bookQuery == row[0]:
                 print("Book is Available Searching for Requested Author...");time.sleep(1)
                 if AuthQuery == row[2]:
-                    print("The Requested Book of Desired Author is Available...");[temp.append(i) for i in row];l.BorrowProcess(temp,localtime);return 0
+                    print("The Requested Book of Desired Author is Available...")
+                    [temp.append(i) for i in row];l.BorrowProcess(temp,localtime);return 0
                 else:
                     x=input("Book is Available,Try Different Author..\nPress 1 if you want to Search other Author :")
                     if x=="1":l.BorrwBook(localtime)
@@ -142,7 +157,8 @@ class portals(data,updation):
         elif portals.planing == "Standard":addDate = 5
         elif portals.planing == "Classic":addDate = 3
         varRenewTime = (datetime.now()+ timedelta(days = addDate)).strftime("%d-%m-%y")
-        c.execute("INSERT INTO BorrowBookData(Name,BookName,AuthorName,BorrowTime,BorrowDate,RenewTime,UserName,bookISBN) VALUES(?,?,?,?,?,?,?,?)",(BorrowerName,bokname,authn,localtime,varBorrowTime,varRenewTime,tempUser,isb));print(localtime);portals.fla = 1;wire.commit()
+        c.execute("INSERT INTO BorrowBookData(Name,BookName,AuthorName,BorrowTime,BorrowDate,RenewTime,UserName,bookISBN) VALUES(?,?,?,?,?,?,?,?)",(BorrowerName,bokname,authn,localtime,varBorrowTime,varRenewTime,tempUser,isb))
+        print(localtime);portals.fla = 1;wire.commit()
         l.updatTabledecrease(bokname,authn,isb)
         return portals.fla
     
